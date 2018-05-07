@@ -24,7 +24,7 @@ public class HelloSpringBootController {
     @RequestMapping("/hello2")
     public String hello(Model model) {
         Person single = new Person("aa", 11);
-
+        System.out.println(12);
         List<Person> personList = new ArrayList<Person>();
         Person p1 = new Person("bb", 22);
         Person p2 = new Person("cc", 33);
