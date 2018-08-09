@@ -16,6 +16,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 
 /**
+ * springboot 测试mvc
  * @author smilewei on 2018/8/9.
  * @since 1.0.0
  */
