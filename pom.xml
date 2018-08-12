@@ -15,6 +15,8 @@
         <module>quartz</module>
         <module>datastructor</module>
         <module>integration</module>
+        <module>frame</module>
+        <module>partterns_design</module>
     </modules>
 
 
