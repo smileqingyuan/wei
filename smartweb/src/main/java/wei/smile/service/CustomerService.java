@@ -4,11 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import wei.smile.helper.DataBaseHelper;
 import wei.smile.model.Customer;
-import wei.smile.util.PropsUtil;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * 客户服务
