@@ -1,8 +1,10 @@
 package wei.smile.helper;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import wei.smile.util.PropsUtil;
@@ -10,7 +12,9 @@ import wei.smile.util.PropsUtil;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -81,6 +85,7 @@ public final class DataBaseHelper {
 
     /**
      * 查询实体列表
+     *
      * @param entityClass
      * @param sql
      * @param params
@@ -105,6 +110,7 @@ public final class DataBaseHelper {
 
     /**
      * 查询实体
+     *
      * @param entityClass
      * @param sql
      * @param params
@@ -127,5 +133,109 @@ public final class DataBaseHelper {
         return entity;
     }
 
+    /**
+     * 执行查询语句
+     *
+     * @param sql
+     * @param params
+     * @return
+     */
+    public static List<Map<String, Object>> executeQuery(String sql, Object... params) {
+        List<Map<String, Object>> result = null;
+        try {
+            Connection conn = getConnection();
+            result = QUERY_RUNNER.query(conn, sql, new MapListHandler(), params);
+        } catch (Exception e) {
+            LOGGER.error("execute query failure", e);
+        }
+        return result;
+    }
+
+    /**
+     * 执行更新语句(包括update、insert、delete)
+     *
+     * @param sql
+     * @param params
+     * @return
+     */
+    public static int executeUpdate(String sql, Object... params) {
+        int rows = 0;
+        try {
+            Connection conn = getConnection();
+            rows = QUERY_RUNNER.update(conn, sql, params);
+        } catch (SQLException e) {
+            LOGGER.error("execute update failure", e);
+        } finally {
+            closeConnection();
+        }
+        return rows;
+    }
+
+    /**
+     * 插入实体
+     *
+     * @param entityClass
+     * @param fieldMap
+     * @param <T>
+     * @return
+     */
+    public static <T> boolean insertEntity(Class<T> entityClass, Map<String, Object> fieldMap) {
+        if (fieldMap == null || fieldMap.size() == 0) {
+            LOGGER.error("can not insert entity:fieldMap is empty");
+            return false;
+        }
+        String sql = "INSERT INTO " + getTableName(entityClass);
+        StringBuilder columns = new StringBuilder("(");
+        StringBuilder values = new StringBuilder("(");
+        fieldMap.forEach((fieldName, value) -> {
+            columns.append(fieldName).append(", ");
+            values.append("?,");
+        });
+        columns.replace(columns.lastIndexOf(", "), columns.length(), ")");
+        values.replace(columns.lastIndexOf(", "), columns.length(), ")");
+        sql += columns + " VALUES " + values;
+        Object[] params = fieldMap.values().toArray();
+
+        return executeUpdate(sql, params) == 1;
+    }
+
+    /**
+     * 更新实体
+     *
+     * @param entityClass
+     * @param fieldMap
+     * @param <T>
+     * @return
+     */
+    public static <T> boolean updateEntity(Class<T> entityClass, long id, Map<String, Object> fieldMap) {
+        if (fieldMap == null || fieldMap.size() == 0) {
+            LOGGER.error("can not update entity:fieldMap is empty");
+            return false;
+        }
+        String sql = "UPDATE " + getTableName(entityClass) + " SET ";
+        StringBuilder columns = new StringBuilder("(");
+        StringBuilder values = new StringBuilder("(");
+        fieldMap.forEach((fieldName, value) -> {
+            columns.append(fieldName).append("=?, ");
+        });
+        columns.substring(0, columns.lastIndexOf(", "));
+        sql += columns + " WHERE ID = ?";
+        List<Object> paramList = new ArrayList<>();
+        paramList.addAll(fieldMap.values());
+        paramList.add(id);
+        Object[] params = paramList.toArray();
+
+        return executeUpdate(sql, params) == 1;
+    }
+
+    public static <T> boolean deleteEntity(Class<T> entityClass, long id) {
+        String sql = "DELETE FROM " + getTableName(entityClass) + " WHERE id =?";
+        return executeUpdate(sql, id) == 1;
+    }
+
+
+    private static String getTableName(Class<?> entityClass) {
+        return entityClass.getSimpleName();
+    }
 
 }

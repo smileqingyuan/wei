@@ -7,9 +7,11 @@ import wei.smile.model.Customer;
 import wei.smile.util.PropsUtil;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 /**
+ * 客户服务
  * @author smilewei on 2018/8/12.
  * @since 1.0.0
  */
@@ -26,22 +28,22 @@ public class CustomerService {
 
 
     public Customer getCustomer(long id) {
-
-        return null;
+        String sql = "SELECT * FROM customer WHERE id ="+id;
+        return DataBaseHelper.queryEntity(Customer.class,sql,id);
     }
 
 
-    public boolean createCustomer(Customer customer) {
-        return false;
+    public boolean createCustomer(Map<String,Object> fieldMap) {
+        return DataBaseHelper.insertEntity(Customer.class,fieldMap);
     }
 
 
-    public boolean updateCustomer(Customer customer){
-        return false;
+    public boolean updateCustomer(long id,Map<String,Object> fieldMap){
+        return DataBaseHelper.updateEntity(Customer.class,id,fieldMap);
     }
 
     public boolean deleteCustomer(long id){
-        return false;
+        return DataBaseHelper.deleteEntity(Customer.class,id);
     }
 
 
