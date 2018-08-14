@@ -55,6 +55,10 @@ public final class DataBaseHelper {
     <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
 </bean>*/
 
+    /**
+     * 配置:@see <a>https://github.com/alibaba/druid/wiki/DruidDataSource%E9%85%8D%E7%BD%AE</a>
+     * 配置属性列表@see <a>https://github.com/alibaba/druid/wiki/DruidDataSource%E9%85%8D%E7%BD%AE%E5%B1%9E%E6%80%A7%E5%88%97%E8%A1%A8</a>
+     */
     static {
         Properties conf = PropsUtil.loadProps("config.properties");
         URL = conf.getProperty("jdbc.url");

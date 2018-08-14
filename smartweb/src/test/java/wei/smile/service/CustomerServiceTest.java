@@ -23,7 +23,7 @@ public class CustomerServiceTest {
     public void getCustomerList() throws Exception {
 
         CustomerService customerService = new CustomerService();
-        List<Customer> customerList = customerService.getCustomerList("");
+        List<Customer> customerList = customerService.getCustomerList();
         System.out.println(customerList);
 
     }
