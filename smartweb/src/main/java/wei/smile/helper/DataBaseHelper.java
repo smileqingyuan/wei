@@ -1,5 +1,6 @@
 package wei.smile.helper;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -9,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import wei.smile.util.PropsUtil;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,29 +26,66 @@ public final class DataBaseHelper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DataBaseHelper.class);
 
-    private static final String DRIVER;
     private static final String URL;
     private static final String USERNAME;
     private static final String PASSWORD;
 
+    private static final DruidDataSource dataSource = new DruidDataSource();
+
+    /*<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+    <property name="url" value="${jdbc_url}" />
+    <property name="username" value="${jdbc_user}" />
+    <property name="password" value="${jdbc_password}" />
+
+    <property name="filters" value="stat" />
+
+    <property name="maxActive" value="20" />
+    <property name="initialSize" value="1" />
+    <property name="maxWait" value="60000" />
+    <property name="minIdle" value="1" />
+
+    <property name="timeBetweenEvictionRunsMillis" value="60000" />
+    <property name="minEvictableIdleTimeMillis" value="300000" />
+
+    <property name="validationQuery" value="SELECT 'x'" />
+    <property name="testWhileIdle" value="true" />
+    <property name="testOnBorrow" value="false" />
+    <property name="testOnReturn" value="false" />
+    <property name="poolPreparedStatements" value="true" />
+    <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
+</bean>*/
+
     static {
         Properties conf = PropsUtil.loadProps("config.properties");
-        DRIVER = conf.getProperty("jdbc.driver");
         URL = conf.getProperty("jdbc.url");
         USERNAME = conf.getProperty("jdbc.username");
         PASSWORD = conf.getProperty("jdbc.password");
+        dataSource.setUrl(URL);
+        dataSource.setUsername(USERNAME);
+        dataSource.setPassword(PASSWORD);
+        dataSource.setMaxActive(20);
+        dataSource.setInitialSize(1);
+        dataSource.setMaxWait(60000);
+        dataSource.setMinIdle(1);
+        dataSource.setTimeBetweenEvictionRunsMillis(60000);
+        dataSource.setMinEvictableIdleTimeMillis(300000);
+        dataSource.setValidationQuery("SELECT 'x'");
+        dataSource.setTestWhileIdle(true);
+        dataSource.setTestOnBorrow(false);
+        dataSource.setTestOnReturn(false);
+        dataSource.setPoolPreparedStatements(true);
+        dataSource.setMaxPoolPreparedStatementPerConnectionSize(20);
         try {
-            Class.forName(DRIVER);
-        } catch (ClassNotFoundException e) {
-            LOGGER.error("can not load jdbc driver", e);
+            dataSource.setFilters("stat");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
     }
 
 
     private static final QueryRunner QUERY_RUNNER = new QueryRunner();
     private static final ThreadLocal<Connection> CONNECTION_HOLDER = new ThreadLocal<>();
-
-    //todo weifw 添加Druid连接池，说明Druid连接池的好处在哪里？
 
     /**
      * 数据库连接
@@ -56,10 +93,12 @@ public final class DataBaseHelper {
      * @return
      */
     public static Connection getConnection() {
+        //ThreadLocal 线程容器，当前线程中可存放任何的东西，可以随放随取
         Connection conn = CONNECTION_HOLDER.get();
+
         if (conn == null) {
             try {
-                conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                conn = dataSource.getConnection();
             } catch (SQLException e) {
                 LOGGER.error("get connection failure", e);
                 throw new RuntimeException(e);
