@@ -34,6 +34,7 @@
         <mysql-connector.version>5.1.33</mysql-connector.version>
         <druid.version>1.0.18</druid.version>
         <apache.commons.lang.version>3.3.2</apache.commons.lang.version>
+        <junit.version>4.12</junit.version>
     </properties>
 
     <parent>
@@ -110,6 +111,15 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>${apache.commons.lang.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+
         </dependencies>
     </dependencyManagement>
     <build>

@@ -63,6 +63,16 @@ public class PropsUtil {
         return value;
     }
 
+ /**
+     * 获取字符型属性(可指定默认值)
+     * @param props
+     * @param key
+     * @return
+     */
+    public static String getString(Properties props, String key) {
+        return getString(props,key,"");
+    }
+
     public static int getInt(Properties props, String key){
         return getInt(props,key,0);
     }
