@@ -10,7 +10,7 @@ import java.util.Properties;
  * @author smilewei on 2018/8/19.
  * @since 1.0.0
  */
-public class ConfigHelper {
+public final class ConfigHelper {
 
     private static final Properties CONFIG_PROPS = PropsUtil.loadProps(ConfigConstant.CONFIG_FILE);
 
@@ -31,7 +31,7 @@ public class ConfigHelper {
         return PropsUtil.getString(CONFIG_PROPS,ConfigConstant.JDBC_PASSWORD);
     }
 
-    public static String getAppPackage(){
+    public static String getAppBasePackage(){
         return PropsUtil.getString(CONFIG_PROPS,ConfigConstant.APP_BASE_PACKAGE);
     }
 
