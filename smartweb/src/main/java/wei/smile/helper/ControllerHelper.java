@@ -3,6 +3,7 @@ package wei.smile.helper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import wei.smile.annotation.Action;
+import wei.smile.annotation.Controller;
 import wei.smile.bean.Handler;
 import wei.smile.bean.Request;
 
@@ -26,7 +27,7 @@ public final class ControllerHelper {
 
     static {
         //获取所有的Controller类
-        Set<Class<?>> controllerClassSet = ClassHelper.getControllerClassSet();
+        Set<Class<?>> controllerClassSet = ClassHelper.getClassSetByAnnotation(Controller.class);
         if (CollectionUtils.isEmpty(controllerClassSet)) {
 
             controllerClassSet.forEach(controllerClass -> {
