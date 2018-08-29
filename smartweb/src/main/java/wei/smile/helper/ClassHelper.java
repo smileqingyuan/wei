@@ -2,6 +2,7 @@ package wei.smile.helper;
 
 import wei.smile.annotation.Controller;
 import wei.smile.annotation.Service;
+import wei.smile.aop.annotation.Aspect;
 import wei.smile.util.ClassUtil;
 
 import java.lang.annotation.Annotation;
@@ -45,6 +46,7 @@ public final class ClassHelper {
         Set<Class<?>> classSet = new HashSet<>();
         classSet.addAll(getClassSetByAnnotation(Controller.class));
         classSet.addAll(getClassSetByAnnotation(Service.class));
+        classSet.addAll(getClassSetByAnnotation(Aspect.class));
         return classSet;
 
     }

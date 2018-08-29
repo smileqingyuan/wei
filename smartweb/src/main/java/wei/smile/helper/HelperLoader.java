@@ -1,6 +1,5 @@
 package wei.smile.helper;
 
-import wei.smile.annotation.Controller;
 import wei.smile.util.ClassUtil;
 
 /**
@@ -17,9 +16,10 @@ public final class HelperLoader {
         Class<?>[] classList = {
                 ClassHelper.class,
                 BeanHelper.class,
+                /*AOP的加载优先于IOC，因为首先需要通过AopHelper获取代理对象，然后才能通过IocHelper进行依赖注入*/
+                AopHelper.class,
                 IocHelper.class,
-                ControllerHelper.class,
-                AopHelper.class
+                ControllerHelper.class
         };
 
         for (Class<?> cls : classList) {
