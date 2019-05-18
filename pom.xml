@@ -35,6 +35,8 @@
         <druid.version>1.0.18</druid.version>
         <apache.commons.lang.version>3.3.2</apache.commons.lang.version>
         <junit.version>4.12</junit.version>
+        <mybatis.spring.verison>1.1.1</mybatis.spring.verison>
+        <jsoup.version>1.10.2</jsoup.version>
     </properties>
 
     <parent>
@@ -117,6 +119,19 @@
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
                 <scope>test</scope>
+            </dependency>
+
+            <!-- Spring Boot Mybatis 依赖 -->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.spring.verison}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
+            <dependency>
+                <groupId>org.jsoup</groupId>
+                <artifactId>jsoup</artifactId>
+                <version>${jsoup.version}</version>
             </dependency>
 
 

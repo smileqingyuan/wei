@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="corejava" />
+        <module name="datastructor" />
+        <module name="integration" />
+        <module name="smartweb" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="common" target="1.8" />
+      <module name="frame" target="1.8" />
+      <module name="leetcode" target="1.8" />
+      <module name="partterns_design" target="1.8" />
+      <module name="quartz" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
