@@ -13,6 +13,8 @@
         <module>smartweb</module>
         <module>datastructor</module>
         <module>integration</module>
+        <module>plusone</module>
+        <module>sourcecode</module>
     </modules>
 
 
